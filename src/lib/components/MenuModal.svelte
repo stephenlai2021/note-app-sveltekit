@@ -4,9 +4,22 @@
 	import { darkMode } from '$lib/stores/noteStore';
 	import SunIcon from '$lib/components/icons/SunIcon.svelte';
 	import MoonIcon from '$lib/components/icons/MoonIcon.svelte';
+
+	const slidefade = (node, params) => {
+		const existingTransform = getComputedStyle(node).transform.replace('none', '');
+
+		return {
+			delay: params.delay || 0,
+			duration: params.duration || 200,
+			easing: params.easing,
+			css: (t, u) =>
+				`transform-origin: top right; transform: ${existingTransform} scale(${t}); opacity: ${t};`
+		};
+	}
+
 </script>
 
-<ul class="menu" transition:fade={{ duration: 150 }} on:keydown on:click|stopPropagation>
+<ul class="menu" transition:slidefade on:keydown on:click|stopPropagation>
 	<li>
 		{#if $locale === 'en'}
 			<span class="menu-item" on:keydown on:click={() => ($locale = 'zh-TW')}>CHN / 中文</span>

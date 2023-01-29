@@ -6,7 +6,19 @@
 	import UpdateNoteModal from '$lib/components/UpdateNoteModal.svelte';
 
 	export let note;
-	console.log('note: ', note)
+	console.log('note: ', note);
+
+	const slidefade = (node, params) => {
+		const existingTransform = getComputedStyle(node).transform.replace('none', '');
+
+		return {
+			delay: params.delay || 0,
+			duration: params.duration || 200,
+			easing: params.easing,
+			css: (t, u) =>
+				`transform-origin: bottom right; transform: ${existingTransform} scale(${t}); opacity: ${t};`
+		};
+	}
 
 	const editNote = async (item) => {
 		$tempNote = item;
@@ -29,7 +41,7 @@
 	};
 
 	function handleMenuClose() {
-		note.menu = false
+		note.menu = false;
 		document.body.removeEventListener('click', handleMenuClose);
 	}
 </script>
@@ -51,7 +63,8 @@
 			/>
 
 			{#if note.menu}
-				<ul class="menu" transition:fade={{ duration: 150 }} on:keydown on:click|stopPropagation>
+				<!-- <ul class="menu" transition:fade={{ duration: 150 }} on:keydown on:click|stopPropagation> -->
+				<ul class="menu" transition:slidefade on:keydown on:click|stopPropagation>
 					<li on:keydown on:click={() => editNote(note)}>
 						<i class="uil uil-pen" />Edit
 					</li>
