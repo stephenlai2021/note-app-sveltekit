@@ -49,7 +49,7 @@
 
 	.menu {
 		position: absolute;
-		top: 18px;
+		top: 15px;
 		right: 50px;
 		padding: 5px;
 		background: #fff;

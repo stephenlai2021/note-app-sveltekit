@@ -22,7 +22,7 @@
 	<h1>{$t('common.title')}</h1>
 
 	<div class="icon-group">
-		<span on:keydown on:click|stopPropagation={handleMenuOpen}><AvatarIcon width="30" height="30"/></span>
+		<span on:keydown on:click|stopPropagation={handleMenuOpen}><AvatarIcon width="40" height="40"/></span>
 	</div>
 </div>
 
