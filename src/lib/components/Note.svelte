@@ -1,16 +1,12 @@
 <script>
-	import moment from 'moment';
 	import { showUpdateNoteModal, notes, tempNote } from '$lib/stores/noteStore';
-	import { browser } from '$app/environment';
 	import { fade } from 'svelte/transition';
-	import { goto } from '$app/navigation';
-	// import { page } from '$app/stores';
+	import moment from 'moment';
 	import supabase from '$lib/supabase/config';
 	import UpdateNoteModal from '$lib/components/UpdateNoteModal.svelte';
 
 	export let note;
-
-	let noteTemp = { ...note, menuShown: false };
+	console.log('note: ', note)
 
 	const editNote = async (item) => {
 		$tempNote = item;
@@ -27,52 +23,39 @@
 		}
 	};
 
-	const showMenu = async () => {
-		noteTemp.menuShown = !noteTemp.menuShown;
+	const handleMenuOpen = () => {
+		note.menu = true;
+		document.body.addEventListener('click', handleMenuClose);
 	};
 
-	const slidefade = (node, params) => {
-		const existingTransform = getComputedStyle(node).transform.replace('none', '');
-
-		return {
-			// delay: params.delay || 0,
-			duration: params.duration || 150,
-			easing: params.easing || cubicOut,
-			css: (t, u) =>
-				`transform-origin: bottom right; transform: ${existingTransform} scaleY(${t}); opacity: ${t};`
-		};
-	};
-
-	$: if (browser) {
-		document.addEventListener('click', (e) => {
-			noteTemp.menuShown = false;
-		});
+	function handleMenuClose() {
+		note.menu = false
+		document.body.removeEventListener('click', handleMenuClose);
 	}
 </script>
 
-<li class="note" on:keydown on:click|stopPropagation>
+<li class="note">
 	<div class="details">
-		<p>{noteTemp.title}</p>
-		<span>{noteTemp.description}</span>
+		<p>{note.title}</p>
+		<span>{note.description}</span>
 	</div>
 	<div class="bottom-content">
-		<span> {moment(new Date(noteTemp.created_at)).format('MMMM DD, YYYY')}</span>
+		<span> {moment(new Date(note.created_at)).format('MMMM DD, YYYY')}</span>
 		<div class="settings">
 			<i
 				on:keydown
-				on:click={showMenu}
+				on:click|stopPropagation={handleMenuOpen}
 				class="uil uil-ellipsis-h"
 				style:transform="scale(0)"
 				style:transition="transform 0.2s ease"
 			/>
 
-			{#if noteTemp.menuShown}
-				<ul class="menu" transition:fade>
-					<!-- <ul class="menu" transition:slidefade> -->
-					<li on:keydown on:click={() => editNote(noteTemp)}>
+			{#if note.menu}
+				<ul class="menu" transition:fade={{ duration: 150 }} on:keydown on:click|stopPropagation>
+					<li on:keydown on:click={() => editNote(note)}>
 						<i class="uil uil-pen" />Edit
 					</li>
-					<li on:keydown on:click={() => deleteNote(noteTemp.id, noteTemp.title)}>
+					<li on:keydown on:click={() => deleteNote(note.id, note.title)}>
 						<i class="uil uil-trash" />Delete
 					</li>
 				</ul>
@@ -97,24 +80,20 @@
 		overflow-y: auto;
 	}
 
-	.note .details::-webkit-scrollbar,
-	.popup textarea::-webkit-scrollbar {
+	.note .details::-webkit-scrollbar {
 		width: 0;
 	}
 
-	.note .details:hover::-webkit-scrollbar,
-	.popup textarea:hover::-webkit-scrollbar {
+	.note .details:hover::-webkit-scrollbar {
 		width: 5px;
 	}
 
-	.note .details:hover::-webkit-scrollbar-track,
-	.popup textarea:hover::-webkit-scrollbar-track {
+	.note .details:hover::-webkit-scrollbar-track {
 		background: #f1f1f1;
 		border-radius: 25px;
 	}
 
-	.note .details:hover::-webkit-scrollbar-thumb,
-	.popup textarea:hover::-webkit-scrollbar-thumb {
+	.note .details:hover::-webkit-scrollbar-thumb {
 		background: #e6e6e6;
 		border-radius: 25px;
 	}
@@ -129,10 +108,7 @@
 		color: #575757;
 		font-size: 16px;
 		margin-top: 5px;
-		/* width: 225px; */
 		overflow-x: hidden;
-		/* overflow-wrap: break-work; */
-		/* word-wrap: break-word; */
 		white-space: pre;
 		text-overflow: ellipsis;
 		text-overflow: word-break;
@@ -172,9 +148,6 @@
 		/* transition: transform 0.2s ease; */
 	}
 
-	.settings.show .menu {
-		transform: scale(1);
-	}
 	.settings .menu li {
 		height: 25px;
 		font-size: 16px;

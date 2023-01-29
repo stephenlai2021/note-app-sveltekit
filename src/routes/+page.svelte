@@ -1,8 +1,7 @@
 <script>
 	import supabase from '$lib/supabase/config';
-	import { showAddNewNoteModal, notes } from '$lib/stores/noteStore';
+	import { showAddNewNoteModal, notes, showMenu } from '$lib/stores/noteStore';
 	import { t, locale } from '$lib/i18n/translations';
-	import { browser } from '$app/environment';
 	import AddNewNoteModal from '$lib/components/AddNewNoteModal.svelte';
 	import Note from '$lib/components/Note.svelte';
 
@@ -10,11 +9,21 @@
 	const { notesArray } = data;
 
 	$notes = notesArray;
-	console.log('notes: ', $notes)
+	// console.log('notes: ', $notes)
+
+	const handleMenuOpen = () => {
+		$showAddNewNoteModal = true;
+		document.body.addEventListener('click', handleMenuClose);
+	};
+
+	const handleMenuClose = () => {
+		$showAddNewNoteModal = false;
+		document.body.removeEventListener('click', handleMenuClose);
+	};
 </script>
 
 <div class="wrapper">
-	<li class="add-box" on:keydown on:click={() => ($showAddNewNoteModal = true)}>
+	<li class="add-box" on:keydown on:click|stopPropagation={handleMenuOpen}>
 		<div class="icon"><i class="uil uil-plus" /></div>
 		<p>{$t('common.description')}</p>
 	</li>
@@ -25,5 +34,8 @@
 </div>
 
 {#if $showAddNewNoteModal}
-	<AddNewNoteModal />
+	<!-- <div on:keydown on:click|stopPropagation> -->
+	<!-- <div on:keydown on:click|stopPropagation> -->
+		<AddNewNoteModal />
+	<!-- </div> -->
 {/if}
