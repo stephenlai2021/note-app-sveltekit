@@ -4,36 +4,36 @@
 	import moment from 'moment';
 	import supabase from '$lib/supabase/config';
 	import UpdateNoteModal from '$lib/components/UpdateNoteModal.svelte';
+	import ActionModal from '$lib/components/ActionModal.svelte';
 
 	export let note;
-	console.log('note: ', note);
 
-	const slidefade = (node, params) => {
-		const existingTransform = getComputedStyle(node).transform.replace('none', '');
+	// const slidefade = (node, params) => {
+	// 	const existingTransform = getComputedStyle(node).transform.replace('none', '');
 
-		return {
-			delay: params.delay || 0,
-			duration: params.duration || 200,
-			easing: params.easing,
-			css: (t, u) =>
-				`transform-origin: bottom right; transform: ${existingTransform} scale(${t}); opacity: ${t};`
-		};
-	}
+	// 	return {
+	// 		delay: params.delay || 0,
+	// 		duration: params.duration || 200,
+	// 		easing: params.easing,
+	// 		css: (t, u) =>
+	// 			`transform-origin: bottom right; transform: ${existingTransform} scale(${t}); opacity: ${t};`
+	// 	};
+	// }
 
-	const editNote = async (item) => {
-		$tempNote = item;
-		$showUpdateNoteModal = true;
-	};
+	// const editNote = async (item) => {
+	// 	$tempNote = item;
+	// 	$showUpdateNoteModal = true;
+	// };
 
-	const deleteNote = async (id, title) => {
-		let text = `Are you sure to delete <${title}> ?`;
-		if (confirm(text) == true) {
-			$notes = $notes.filter((note) => note.id !== id);
-			await supabase.from('note_app').delete().eq('id', id);
-		} else {
-			return;
-		}
-	};
+	// const deleteNote = async (id, title) => {
+	// 	let text = `Are you sure to delete <${title}> ?`;
+	// 	if (confirm(text) == true) {
+	// 		$notes = $notes.filter((note) => note.id !== id);
+	// 		await supabase.from('note_app').delete().eq('id', id);
+	// 	} else {
+	// 		return;
+	// 	}
+	// };
 
 	const handleMenuOpen = () => {
 		note.menu = true;
@@ -43,16 +43,6 @@
 	const handleMenuClose = () => {
 		note.menu = false;
 		document.body.removeEventListener('click', handleMenuClose);
-	}
-
-	const handleUpdateNoteMenuOpen = () => {
-		$showUpdateNoteModal = true;
-		document.body.addEventListener('click', handleUpdateNoteMenuOpen);
-	};
-
-	const handleUpdateNoteMenuClose = () => {
-		$showUpdateNoteModal = false;
-		document.body.removeEventListener('click', handleUpdateNoteMenuOpen);
 	}
 </script>
 
@@ -73,14 +63,15 @@
 			/>
 
 			{#if note.menu}
-				<ul class="menu" transition:slidefade on:keydown on:click|stopPropagation>
+				<!-- <ul class="menu" transition:slidefade on:keydown on:click|stopPropagation>
 					<li on:keydown on:click={() => editNote(note)}>
 						<i class="uil uil-pen" />Edit
 					</li>
 					<li on:keydown on:click={() => deleteNote(note.id, note.title)}>
 						<i class="uil uil-trash" />Delete
 					</li>
-				</ul>
+				</ul> -->
+				<ActionModal {note} />
 			{/if}
 		</div>
 	</div>
@@ -156,7 +147,7 @@
 		font-size: 15px;
 	}
 
-	.settings .menu {
+	/* .settings .menu {
 		z-index: 100;
 		bottom: 0;
 		right: -5px;
@@ -185,7 +176,7 @@
 
 	.menu li:hover {
 		background: #f5f5f5;
-	}
+	} */
 
 	.menu li i {
 		padding-right: 8px;
