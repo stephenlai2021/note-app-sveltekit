@@ -27,9 +27,7 @@
 		<div class="content">
 			<header>
 				<p>Add a new Note</p>
-				<!-- <i class="uil uil-times" on:keydown on:click|stopPropagation /> -->
 				<i class="uil uil-times" on:keydown on:click={() => ($showAddNewNoteModal = false)} />
-				<!-- <i class="uil uil-times" /> -->
 			</header>
 			<form action="#">
 				<div class="row title">

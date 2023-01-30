@@ -40,9 +40,19 @@
 		document.body.addEventListener('click', handleMenuClose);
 	};
 
-	function handleMenuClose() {
+	const handleMenuClose = () => {
 		note.menu = false;
 		document.body.removeEventListener('click', handleMenuClose);
+	}
+
+	const handleUpdateNoteMenuOpen = () => {
+		$showUpdateNoteModal = true;
+		document.body.addEventListener('click', handleUpdateNoteMenuOpen);
+	};
+
+	const handleUpdateNoteMenuClose = () => {
+		$showUpdateNoteModal = false;
+		document.body.removeEventListener('click', handleUpdateNoteMenuOpen);
 	}
 </script>
 
@@ -63,7 +73,6 @@
 			/>
 
 			{#if note.menu}
-				<!-- <ul class="menu" transition:fade={{ duration: 150 }} on:keydown on:click|stopPropagation> -->
 				<ul class="menu" transition:slidefade on:keydown on:click|stopPropagation>
 					<li on:keydown on:click={() => editNote(note)}>
 						<i class="uil uil-pen" />Edit
@@ -155,14 +164,12 @@
 		background: #fff;
 		position: absolute;
 		border-radius: 4px;
-		/* transform: scale(0); */
-		/* transform-origin: bottom right; */
 		box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
-		/* transition: transform 0.2s ease; */
 	}
 
 	.settings .menu li {
 		height: 25px;
+		width: 104px;
 		font-size: 16px;
 		margin-bottom: 2px;
 		padding: 17px 15px;

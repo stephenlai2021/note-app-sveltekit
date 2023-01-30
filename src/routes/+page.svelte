@@ -9,7 +9,6 @@
 	const { notesArray } = data;
 
 	$notes = notesArray;
-	// console.log('notes: ', $notes)
 
 	const handleMenuOpen = () => {
 		$showAddNewNoteModal = true;
@@ -34,8 +33,5 @@
 </div>
 
 {#if $showAddNewNoteModal}
-	<!-- <div on:keydown on:click|stopPropagation> -->
-	<!-- <div on:keydown on:click|stopPropagation> -->
-		<AddNewNoteModal />
-	<!-- </div> -->
+	<AddNewNoteModal />
 {/if}

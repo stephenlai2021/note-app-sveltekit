@@ -14,7 +14,7 @@
 </script>
 
 <div class="popup-box" transition:fade={{ duration: 100 }}>
-	<div class="popup">
+	<div class="popup" on:keydown on:click|stopPropagation>
 		<div class="content">
 			<header>
 				<p>Update a Note</p>

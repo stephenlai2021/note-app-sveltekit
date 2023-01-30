@@ -55,4 +55,10 @@
 		display: flex;
 		align-items: center;
 	}
+	
+	@media (max-width: 400px) {
+		.header {
+			padding: 10px 20px 0 20px;
+		}
+	}
 </style>
