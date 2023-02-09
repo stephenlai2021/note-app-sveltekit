@@ -1,5 +1,4 @@
 <script>
-	import { fade } from 'svelte/transition';
 	import { t, locales, locale } from '$lib/i18n/translations';
 	import { darkMode } from '$lib/stores/noteStore';
 	import SunIcon from '$lib/components/icons/SunIcon.svelte';
@@ -62,8 +61,8 @@
 
 	.menu {
 		position: absolute;
-		top: 15px;
-		right: 50px;
+		top: 50px;
+		right: 54px;
 		padding: 5px;
 		background: #fff;
 		position: absolute;

@@ -1,39 +1,10 @@
 <script>
-	import { showUpdateNoteModal, notes, tempNote } from '$lib/stores/noteStore';
-	import { fade } from 'svelte/transition';
+	import { showUpdateNoteModal, tempNote } from '$lib/stores/noteStore';
 	import moment from 'moment';
-	import supabase from '$lib/supabase/config';
 	import UpdateNoteModal from '$lib/components/UpdateNoteModal.svelte';
 	import ActionModal from '$lib/components/ActionModal.svelte';
 
 	export let note;
-
-	// const slidefade = (node, params) => {
-	// 	const existingTransform = getComputedStyle(node).transform.replace('none', '');
-
-	// 	return {
-	// 		delay: params.delay || 0,
-	// 		duration: params.duration || 200,
-	// 		easing: params.easing,
-	// 		css: (t, u) =>
-	// 			`transform-origin: bottom right; transform: ${existingTransform} scale(${t}); opacity: ${t};`
-	// 	};
-	// }
-
-	// const editNote = async (item) => {
-	// 	$tempNote = item;
-	// 	$showUpdateNoteModal = true;
-	// };
-
-	// const deleteNote = async (id, title) => {
-	// 	let text = `Are you sure to delete <${title}> ?`;
-	// 	if (confirm(text) == true) {
-	// 		$notes = $notes.filter((note) => note.id !== id);
-	// 		await supabase.from('note_app').delete().eq('id', id);
-	// 	} else {
-	// 		return;
-	// 	}
-	// };
 
 	const handleMenuOpen = () => {
 		note.menu = true;
@@ -63,14 +34,6 @@
 			/>
 
 			{#if note.menu}
-				<!-- <ul class="menu" transition:slidefade on:keydown on:click|stopPropagation>
-					<li on:keydown on:click={() => editNote(note)}>
-						<i class="uil uil-pen" />Edit
-					</li>
-					<li on:keydown on:click={() => deleteNote(note.id, note.title)}>
-						<i class="uil uil-trash" />Delete
-					</li>
-				</ul> -->
 				<ActionModal {note} />
 			{/if}
 		</div>

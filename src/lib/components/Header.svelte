@@ -1,14 +1,12 @@
 <script>
 	import { t, locales, locale } from '$lib/i18n/translations';
 	import { darkMode, showMenu } from '$lib/stores/noteStore';
-	import LangIcon from '$lib/components/icons/LangIcon.svelte';
-	import SunIcon from '$lib/components/icons/SunIcon.svelte';
-	import MoonIcon from '$lib/components/icons/MoonIcon.svelte';
 	import AvatarIcon from '$lib/components/icons/AvatarIcon.svelte';
 	import MenuModal from '$lib/components/MenuModal.svelte';
 
 	const handleMenuOpen = () => {
-		$showMenu = true
+		// $showMenu = true
+		$showMenu ? $showMenu = false : $showMenu = true
 		document.body.addEventListener('click', handleMenuClose)
 	}
 

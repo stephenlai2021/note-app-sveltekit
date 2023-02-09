@@ -3,22 +3,29 @@
 	import { fade } from 'svelte/transition';
 	import supabase from '$lib/supabase/config';
 
+	const closeModal = () => {
+		$tempNote.menu = false
+		$showUpdateNoteModal = false;		
+	}
+
 	const updateNote = async (item) => {
-		$showUpdateNoteModal = false;
+		closeModal()
 
 		await supabase
 			.from('note_app')
 			.update({ title: item.title, description: item.description })
 			.eq('id', item.id);
+
+		$tempNote = $tempNote
 	};
 </script>
 
-<div class="popup-box" transition:fade={{ duration: 100 }}>
+<div class="popup-box" transition:fade={{ duration: 50 }}>
 	<div class="popup" on:keydown on:click|stopPropagation>
 		<div class="content">
 			<header>
 				<p>Update a Note</p>
-				<i class="uil uil-times" on:keydown on:click={() => ($showUpdateNoteModal = false)} />
+				<i class="uil uil-times" on:keydown on:click={closeModal} />
 			</header>
 			<form action="#">
 				<div class="row title">

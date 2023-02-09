@@ -1,6 +1,5 @@
 <script>
-	import supabase from '$lib/supabase/config';
-	import { showAddNewNoteModal, notes, showMenu } from '$lib/stores/noteStore';
+	import { showAddNewNoteModal, notes } from '$lib/stores/noteStore';
 	import { t, locale } from '$lib/i18n/translations';
 	import AddNewNoteModal from '$lib/components/AddNewNoteModal.svelte';
 	import Note from '$lib/components/Note.svelte';

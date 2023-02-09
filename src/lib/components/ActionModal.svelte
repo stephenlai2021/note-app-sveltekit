@@ -1,13 +1,14 @@
 <script>
   import { tempNote, showUpdateNoteModal, notes } from '$lib/stores/noteStore'
-  export let note
+  
+	export let note
 
   const slidefade = (node, params) => {
 		const existingTransform = getComputedStyle(node).transform.replace('none', '');
 
 		return {
 			delay: params.delay || 0,
-			duration: params.duration || 200,
+			duration: params.duration || 100,
 			easing: params.easing,
 			css: (t, u) =>
 				`transform-origin: bottom right; transform: ${existingTransform} scale(${t}); opacity: ${t};`
@@ -29,11 +30,6 @@
 			return;
 		}
 	};
-
-  // const handleMenuOpen = () => {
-	// 	$showUpdateNoteModal = true
-	// 	document.body.addEventListener('click', handleMenuClose)
-	// }
 
 	const handleMenuClose = () => {
 		$showUpdateNoteModal = false
