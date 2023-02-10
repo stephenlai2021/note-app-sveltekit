@@ -5,6 +5,7 @@ export const notes = writable([]);
 export const tempNote = writable({});
 export const darkMode = writable(false);
 export const showMenu = writable(false);
+export const updateDone = writable(false);
 export const showAddNewNoteModal = writable(false)
 export const showUpdateNoteModal = writable(false)
 export const isShowMenu = writable(false)
