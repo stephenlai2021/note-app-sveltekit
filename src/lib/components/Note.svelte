@@ -40,7 +40,7 @@
 	</div>
 
 	{#if $showUpdateNoteModal}
-		<UpdateNoteModal {$tempNote} />
+		<UpdateNoteModal />
 	{/if}
 </li>
 

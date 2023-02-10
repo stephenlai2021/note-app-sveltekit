@@ -3,8 +3,11 @@
 	import { fade } from 'svelte/transition';
 	import supabase from '$lib/supabase/config';
 
+	// export let note
+
 	const closeModal = () => {
 		$tempNote.menu = false
+		// note.menu = false
 		$showUpdateNoteModal = false;		
 	}
 
@@ -15,8 +18,6 @@
 			.from('note_app')
 			.update({ title: item.title, description: item.description })
 			.eq('id', item.id);
-
-		$tempNote = $tempNote
 	};
 </script>
 
@@ -31,12 +32,15 @@
 				<div class="row title">
 					<label for="">Title</label>
 					<input id="title" type="text" spellcheck="false" bind:value={$tempNote.title} />
+					<!-- <input id="title" type="text" spellcheck="false" bind:value={note.title} /> -->
 				</div>
 				<div class="row description">
 					<label for="description">Description</label>
 					<textarea id="description" spellcheck="false" bind:value={$tempNote.description} />
+					<!-- <textarea id="description" spellcheck="false" bind:value={note.description} /> -->
 				</div>
 				<button on:click={() => updateNote($tempNote)}>Update Note</button>
+				<!-- <button on:click={() => updateNote(note)}>Update Note</button> -->
 			</form>
 		</div>
 	</div>
