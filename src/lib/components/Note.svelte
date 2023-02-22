@@ -1,50 +1,83 @@
 <script>
-	import { showUpdateNoteModal, tempNote } from '$lib/stores/noteStore';
+	import { showUpdateNoteModal, tempNote, notes } from '$lib/stores/noteStore';
 	import moment from 'moment';
 	import UpdateNoteModal from '$lib/components/UpdateNoteModal.svelte';
 	import ActionModal from '$lib/components/ActionModal.svelte';
+	import EditIcon from '$lib/components/icons/EditIcon.svelte'
+	import DeleteIcon from '$lib/components/icons/DeleteIcon.svelte'
+	import supabase from '$lib/supabase/config'
 
 	export let note;
 
+	// let filterDesc = note.description.replace("<br/>", "\r");
+	let filterDesc = note.description.replace("\n", "<br/>");
+
 	const handleMenuOpen = () => {
 		note.menu = true;
-		document.body.addEventListener('click', handleMenuClose);
+		// document.body.addEventListener('click', handleMenuClose);
 	};
 
-	const handleMenuClose = () => {
-		note.menu = false;
-		document.body.removeEventListener('click', handleMenuClose);
+	const deleteNote = async (id, title) => {
+		let text = `Are you sure to delete <${title}> ?`;
+		if (confirm(text) == true) {
+			$notes = $notes.filter((note) => note.id !== id);
+			const { error } = await supabase.from('note_app').delete().eq('id', id);
+			console.log('delete error: ', error)
+		} else {
+			return;
+		}
+	};
+
+	const editNote = (item) => {
+		$tempNote = item;
+		$showUpdateNoteModal = true;
 	}
 </script>
 
 <li class="note">
 	<div class="details">
 		<p>{note.title}</p>
+		<!-- <span>{filterDesc}</span> -->
 		<span>{note.description}</span>
+		<!-- <span>{note.description.replace("\r", "\n")}</span> -->
+		<!-- <span class="description">{filterDesc}</span> -->
 	</div>
 	<div class="bottom-content">
 		<span> {moment(new Date(note.created_at)).format('MMMM DD, YYYY')}</span>
 		<div class="settings">
-			<i
+			<!-- <i
 				on:keydown
 				on:click|stopPropagation={handleMenuOpen}
-				class="uil uil-ellipsis-h"
+				class="uil uil-ellipsis-h icon-menu"
 				style:transform="scale(0)"
 				style:transition="transform 0.2s ease"
-			/>
+			/> -->
+			<div class="icon-edit" on:keydown on:click={() => editNote(note)}>
+				<EditIcon width="20" height="20" />
+			</div>
+			<div class="icon-trashcan" on:keydown on:click={() => deleteNote(note.id, note.title)}>
+				<DeleteIcon width="20" height="20" />
+			</div>
 
-			{#if note.menu}
+			<!-- {#if note.menu}
 				<ActionModal {note} />
-			{/if}
+			{/if} -->
 		</div>
 	</div>
 
 	{#if $showUpdateNoteModal}
-		<UpdateNoteModal />
+		<UpdateNoteModal {note} />
 	{/if}
 </li>
 
 <style>
+	.icon-edit,
+	.icon-trashcan {
+		/* border: 1px solid; */
+		display: flex;
+		/* align-items: center; */
+	}
+
 	.note {
 		display: flex;
 		flex-direction: column;
@@ -79,15 +112,23 @@
 		font-weight: 500;
 	}
 
+	.description {
+		/* width: 250px; */
+	}
+
 	.note span {
 		display: block;
 		color: #575757;
 		font-size: 16px;
 		margin-top: 5px;
-		overflow-x: hidden;
+
 		white-space: pre;
+		/* overflow-x: hidden;
+		word-wrap: break-word;
+		word-break: break-all;
 		text-overflow: ellipsis;
-		text-overflow: word-break;
+		text-overflow: word-break; */
+		/* border: 1px solid; */
 	}
 
 	.note .bottom-content {
@@ -102,6 +143,11 @@
 
 	.bottom-content .settings {
 		position: relative;
+		/* border: 1px solid; */
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 50px;
 	}
 
 	.bottom-content .settings i {

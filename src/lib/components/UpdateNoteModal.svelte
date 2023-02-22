@@ -1,14 +1,17 @@
 <script>
-	import { showUpdateNoteModal, tempNote } from '$lib/stores/noteStore';
+	import { showUpdateNoteModal, tempNote, notes } from '$lib/stores/noteStore';
 	import { fade } from 'svelte/transition';
 	import supabase from '$lib/supabase/config';
 
+	// export let note
+
 	const closeModal = () => {
-		$tempNote.menu = false;
+		// $tempNote.menu = false;
 		$showUpdateNoteModal = false;
 	};
 
 	const updateNote = async (item) => {
+		$notes = $notes
 		closeModal();
 
 		await supabase
@@ -35,6 +38,7 @@
 					<textarea id="description" spellcheck="false" bind:value={$tempNote.description} />
 				</div>
 				<button on:click={() => updateNote($tempNote)}>Update Note</button>
+				<!-- <button on:click={updateNote}>Update Note</button> -->
 			</form>
 		</div>
 	</div>
